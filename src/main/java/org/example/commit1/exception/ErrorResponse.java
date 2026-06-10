@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class ErrorResponse extends RuntimeException{
+public class ErrorResponse{
 
     private int status;
     private String message;
