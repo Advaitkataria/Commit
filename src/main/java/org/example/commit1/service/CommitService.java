@@ -40,11 +40,16 @@ public class CommitService {
         return commitRepository.findByUserEmailAndDate(email,date);
     }
 
+    public List<Commit> getMyHistory() {
+        return commitRepository.findByUserEmail(getCurrentUser().getEmail());
+    }
+
     public Commit addCommit(Commit commit){
         commit.setUser(getCurrentUser());
-        commitRepository.save(commit);
+        commit.setStatus("ACTIVE");
         commit.setDate(LocalDate.now());
-        return commit;
+
+        return commitRepository.save(commit);
     }
 
     public void deleteCommit(int id){

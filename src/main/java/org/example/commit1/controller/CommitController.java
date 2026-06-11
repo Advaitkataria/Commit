@@ -29,6 +29,10 @@ public class CommitController {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
         return new ResponseEntity<>(commitService.getAllCommit(date), HttpStatus.OK);
     }
+    @GetMapping("/history")
+    public ResponseEntity<List<Commit>> getMyHistory() {
+        return new ResponseEntity<>(commitService.getMyHistory(), HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<Commit> addCommit(@Valid @RequestBody Commit commit){
