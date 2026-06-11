@@ -32,4 +32,7 @@ public class Commit {
     @JoinColumn(name = "user_id",nullable = false)
     @JsonIgnore
     private User user;
+
+    @Pattern(regexp = "ACTIVE|COMPLETED|FAILED")
+    private String status; // "ACTIVE", "COMPLETED", "FAILED"
 }
