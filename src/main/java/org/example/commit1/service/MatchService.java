@@ -52,21 +52,18 @@ public class MatchService {
 
         Commit commit = commitRepository.findByIdWithUser(commitId)
                 .orElseThrow(() -> new RuntimeException("Commit not found"));
-        // ADD THESE THREE LINES TEMPORARILY
-        System.out.println("Commit user email: " + commit.getUser().getEmail());
-        System.out.println("Current user email: " + currentUser.getEmail());
-        System.out.println("Match: " + commit.getUser().getEmail().equals(currentUser.getEmail()));
+
         if(!commit.getUser().getEmail().equals(getCurrentUser().getEmail())){
             throw new UnauthorizedAccessException("This commit does not belong to you");
         }
-        System.out.println("Checking pool...");
+
         boolean alreadyInPool = waitingPoolRepository
                 .findByUserEmailAndDate(currentUser.getEmail(), LocalDate.now())
                 .isPresent();
         if (alreadyInPool) {
             throw new RuntimeException("You are already waiting for a match today");
         }
-        System.out.println("Already in pool: " + alreadyInPool);
+
         boolean alreadyMatched = matchRepository
                 .findByUser1EmailAndDate(currentUser.getEmail(), LocalDate.now())
                 .isPresent()
@@ -77,15 +74,15 @@ public class MatchService {
         if (alreadyMatched) {
             throw new RuntimeException("You already have a match today");
         }
-        System.out.println("Already matched: " + alreadyMatched);
+
 
         Optional<WaitingPool> waitingOptional = waitingPoolRepository
                 .findFirstByDateAndUserEmailNot(LocalDate.now(), currentUser.getEmail());
 
-        System.out.println("Looking for partner...");
+
         if (waitingOptional.isPresent()) {
             WaitingPool partner = waitingOptional.get();
-            System.out.println("Partner found: " + waitingOptional.isPresent());
+
             try {
 
                 waitingPoolRepository.delete(partner);
